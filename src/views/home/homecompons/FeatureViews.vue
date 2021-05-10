@@ -1,0 +1,30 @@
+<!--  -->
+<template>
+  <div class="feature">
+    <a href="https://act.mogujie.com/zzlx67">
+      <img
+        src="~assets/img/home/recommend_bg.jpg"
+        alt=""
+        @load="featureImageLoad"
+    /></a>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "FeatureView",
+  data() {
+    return {};
+  },
+  methods: {
+    featureImageLoad() {
+      this.$emit("featureLoad");
+    },
+  },
+};
+</script>
+<style scoped>
+.feature img {
+  width: 100%;
+}
+</style>
