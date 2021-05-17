@@ -50,10 +50,10 @@ export default {
   methods: {
     refresh() {
       this.scroll && this.scroll.refresh();
-      console.log("执行了刷新函数refresh");
+      // console.log("执行了刷新函数refresh");
     },
     scrollTo(x, y, time = 500) {
-      thsi.scroll && this.scroll.scrollTo(x, y, time);
+      this.scroll && this.scroll.scrollTo(x, y, time);
     },
   },
 };

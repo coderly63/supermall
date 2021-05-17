@@ -50,7 +50,7 @@ import FeatureViews from "./homecompons/FeatureViews.vue";
 import { getHomeMultidata, getHomeGoods } from "network/home";
 
 //公用函数
-import { debounce } from "@/common/utils.js";
+import { itemListenerMixin } from "@/common/mixin";
 
 export default {
   name: "",
@@ -67,8 +67,10 @@ export default {
       currentType: "pop",
       tabOffsetTop: 0,
       isShow: false,
+      currentPosition: 0,
     };
   },
+  mixins: [itemListenerMixin],
   components: {
     navBar,
     HomeSwiper,
@@ -86,12 +88,15 @@ export default {
     this.getHomeGoods("sell");
     // console.log(this.$refs.scroll);
   },
-  mounted() {
-    const refresh = debounce(this.$refs.scroll.refresh, 100);
-    this.$bus.$on("itemImgLoad", () => {
-      refresh();
-    });
-    // console.log(this.$refs.tabControl.$el.offsetTop);
+  activated() {
+    // console.log(this.currentPosition);
+    this.$refs.scroll.refresh();
+    this.$refs.scroll.scrollTo(0, this.currentPosition, 0);
+  },
+  deactivated() {
+    // console.log(this.currentPosition);
+    this.currentPosition = this.$refs.scroll.scroll.y;
+    this.$bus.$off("itemImgLoad", this.monitorImgLoad);
   },
   methods: {
     featureImageLoad() {
@@ -144,6 +149,7 @@ export default {
       getHomeGoods(type, page).then((res) => {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
+        // console.log(res);
         // this.$refs.scroll.scroll.refresh();
       });
     },
